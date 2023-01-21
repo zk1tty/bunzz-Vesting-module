@@ -17,6 +17,9 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
         _;
     }
    
+   /**
+    * TODO[Review]:why argumnet type is list, while only the 1st element is taken?
+    */
     function connectToOtherContracts(address[] calldata contracts) external onlyOwner{
         require(contracts[0] != address(0),"Vesting: Token address is zeroAddress");
         _token = contracts[0];
@@ -48,7 +51,9 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
         return address(_token);
     }
 
-   
+   /**
+    * TODO[Review]:
+    */
     function createVestingSchedule(
         address _beneficiary,
         uint256 _start,
@@ -86,7 +91,9 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
     }
 
   
-
+   /**
+    * TODO[Review]:
+    */
     function revoke(bytes32 vestingScheduleId) external override onlyOwner onlyIfVestingScheduleNotRevoked(vestingScheduleId){
         VestingSchedule storage vestingSchedule = vestingSchedules[vestingScheduleId];
         require(vestingSchedule.revocable == true, "Vesting: vesting is not revocable");
@@ -99,14 +106,15 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
         vestingSchedule.revoked = true;
     }
 
- 
     function withdraw(uint256 amount) external override nonReentrant onlyOwner{
         require(getWithdrawableAmount() >= amount, "Vesting: not enough withdrawable funds");
 
         getTokenObj().safeTransfer(owner(), amount);
     }
 
-
+   /**
+    * TODO[Review]:why argumnet type is list, while only the 1st element is taken?
+    */
     function release(
         bytes32 vestingScheduleId,
         uint256 amount
