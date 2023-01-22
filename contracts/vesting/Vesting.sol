@@ -116,6 +116,7 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
 
     /**
      * Interal compute function
+     * Q: releasableAmount is same meaing with vestedAmount?
      */
     function _computeReleasableAmount(VestingSchedule memory vestingSchedule) internal view returns(uint256){
         uint256 currentTime = getCurrentTime();
@@ -124,6 +125,7 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
         } else if (currentTime >= vestingSchedule.start + vestingSchedule.duration) {
             return vestingSchedule.amountTotal - (vestingSchedule.released);
         } else {
+            // ????
             uint256 timeFromStart = currentTime - (vestingSchedule.start);
             uint secondsPerSlice = vestingSchedule.slicePeriodSeconds;
             uint256 vestedSlicePeriods = timeFromStart / (secondsPerSlice);
@@ -132,9 +134,8 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
             // originally, it's "vestedAmount = vestingSchedule.amountTotal * (vestedSeconds / vestingSchedule.duration)".
             // But it was deformed to avoid a decimal calculation.
             // Reviewed:  vestingSchedule.duration must be >0.
-            uint256 vestedAmount = (vestingSchedule.amountTotal * vestedSeconds) / vestingSchedule.duration;
-            vestedAmount -= vestingSchedule.released;
-            return vestedAmount;
+            uint256 releasableAmount = (vestingSchedule.amountTotal * vestedSeconds) / vestingSchedule.duration - vestingSchedule.released;
+            return releasableAmount;
         }
     }
 
