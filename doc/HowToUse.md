@@ -30,6 +30,18 @@ This function has 2 arguments as follows.
     - amount: the amount of funds you want to retrieve.
 
 ## How-to
-- how to get the vestingSchedule ID?
-  - getVestingSchedulesCountByBeneficiary()?
-- how to check the current releasable Amount?
+
+- Get the vestingSchedule ID?
+  1. Call `getVestingSchedulesCountByBeneficiary(address beneficiary)`. It returns vestingSchedulesCount which represents how many vestingSchedule the given beneficiary has.
+  2. Call `getVestingScheduleByAddressAndIndex(address holder, uint256 index)`. It returns vestingScheduleId(bytes32).
+
+- How to check the detail of vestingSchedule?
+  1. Get vestingSchedule ID.
+  2. Call `getVestingSchedule(bytes32 vestingScheduleId)`.
+
+- Check the current releasable amount?
+  1. Get vestingSchedule ID.
+  2. Call `computeReleasableAmount(vestingScheduleId)`
+
+- Get the current block time?
+  - getCurrentTime()
