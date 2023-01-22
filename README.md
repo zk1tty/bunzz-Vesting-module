@@ -12,5 +12,11 @@
 
 ## Action Items
 
-1. 
+### Documentation 
+- [ ] 1. GK will review [Documentation](./doc) directory from the perspective of styling.
+- [ ] 2. If 1 is acceptable, then Norika can start writing the doc section of other contract.
 
+### Contract code
+
+- [ ] 1. fix or discuss the issues.
+- [ ] 2. work on TODOs mentioned in the contract code.
