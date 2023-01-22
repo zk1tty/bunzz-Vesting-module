@@ -11,6 +11,8 @@ Module contract adds configurable vesting feature to any ERC20 token.
 - Both ContractOwner and Beneficiary can release the token being vested, and transfer it to Beneficiary wallet.
 - ContractOwner can revoke an existing vesting schedule.
 
+Caution: Contract doesn't support native token such as Ether on Ethereum network.
+
 ## Use case
 
 - As a token-sales manager of your project token:
