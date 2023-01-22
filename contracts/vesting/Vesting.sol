@@ -25,34 +25,8 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
         _token = contracts[0];
     }
 
-    function getVestingSchedulesCountByBeneficiary(address _beneficiary) external override view returns(uint256){
-        return holdersVestingCount[_beneficiary];
-    }
-
-  
-    function getVestingIdAtIndex(uint256 index) external override view returns(bytes32){
-        require(index < getVestingSchedulesCount(), "Vesting: index out of bounds");
-        return vestingSchedulesIds[index];
-    }
-
-   
-    function getVestingScheduleByAddressAndIndex(address holder, uint256 index) external view returns(VestingSchedule memory){
-        return getVestingSchedule(computeVestingScheduleIdForAddressAndIndex(holder, index));
-    }
-
-
-
-    function getVestingSchedulesTotalAmount() external view override returns(uint256){
-        return vestingSchedulesTotalAmount;
-    }
-
-  
-    function getToken() external override view returns(address){
-        return address(_token);
-    }
-
    /**
-    * TODO[Review]:
+    * @dev  
     */
     function createVestingSchedule(
         address _beneficiary,
@@ -92,7 +66,7 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
 
   
    /**
-    * TODO[Review]:
+    * @dev 
     */
     function revoke(bytes32 vestingScheduleId) external override onlyOwner onlyIfVestingScheduleNotRevoked(vestingScheduleId){
         VestingSchedule storage vestingSchedule = vestingSchedules[vestingScheduleId];
@@ -113,7 +87,8 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
     }
 
    /**
-    * TODO[Review]:why argumnet type is list, while only the 1st element is taken?
+    * TODO[Review]:
+     * @dev Both Owner and Beneficiary can execute this function.
     */
     function release(
         bytes32 vestingScheduleId,
@@ -134,11 +109,63 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
         );
         uint256 vestedAmount = _computeReleasableAmount(vestingSchedule);
         require(vestedAmount >= amount, "Vesting: cannot release tokens, not enough vested tokens");
-        vestingSchedule.released = vestingSchedule.released + amount;
-        vestingSchedulesTotalAmount = vestingSchedulesTotalAmount - amount;
+        vestingSchedule.released += amount;
+        vestingSchedulesTotalAmount -= amount;
         getTokenObj().safeTransfer(vestingSchedule.beneficiary, amount);
     }
 
+    /**
+     * Interal compute function
+     */
+    function _computeReleasableAmount(VestingSchedule memory vestingSchedule) internal view returns(uint256){
+        uint256 currentTime = getCurrentTime();
+        if ((currentTime < vestingSchedule.cliff) || vestingSchedule.revoked == true) {
+            return 0;
+        } else if (currentTime >= vestingSchedule.start + vestingSchedule.duration) {
+            return vestingSchedule.amountTotal - (vestingSchedule.released);
+        } else {
+            uint256 timeFromStart = currentTime - (vestingSchedule.start);
+            uint secondsPerSlice = vestingSchedule.slicePeriodSeconds;
+            uint256 vestedSlicePeriods = timeFromStart / (secondsPerSlice);
+            uint256 vestedSeconds = vestedSlicePeriods * (secondsPerSlice);
+            // CAUTION
+            // originally, it's "vestedAmount = vestingSchedule.amountTotal * (vestedSeconds / vestingSchedule.duration)".
+            // But it was deformed to avoid a decimal calculation.
+            // Reviewed:  vestingSchedule.duration must be >0.
+            uint256 vestedAmount = (vestingSchedule.amountTotal * vestedSeconds) / vestingSchedule.duration;
+            vestedAmount -= vestingSchedule.released;
+            return vestedAmount;
+        }
+    }
+
+    /**
+     * Getter functions
+     */
+
+    function getVestingSchedulesCountByBeneficiary(address _beneficiary) external override view returns(uint256){
+        return holdersVestingCount[_beneficiary];
+    }
+
+  
+    function getVestingIdAtIndex(uint256 index) external override view returns(bytes32){
+        require(index < getVestingSchedulesCount(), "Vesting: index out of bounds");
+        return vestingSchedulesIds[index];
+    }
+
+   
+    function getVestingScheduleByAddressAndIndex(address holder, uint256 index) external view returns(VestingSchedule memory){
+        return getVestingSchedule(computeVestingScheduleIdForAddressAndIndex(holder, index));
+    }
+
+
+    function getVestingSchedulesTotalAmount() external view override returns(uint256){
+        return vestingSchedulesTotalAmount;
+    }
+
+  
+    function getToken() external override view returns(address){
+        return address(_token);
+    }
  
     function getVestingSchedulesCount() public override view returns(uint256){
         return vestingSchedulesIds.length;
@@ -173,27 +200,6 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
    
     function computeVestingScheduleIdForAddressAndIndex(address holder, uint256 index) public override pure returns(bytes32){
         return keccak256(abi.encodePacked(holder, index));
-    }
-
-   
-    function _computeReleasableAmount(VestingSchedule memory vestingSchedule) internal view returns(uint256){
-        uint256 currentTime = getCurrentTime();
-        if ((currentTime < vestingSchedule.cliff) || vestingSchedule.revoked == true) {
-            return 0;
-        } else if (currentTime >= vestingSchedule.start + vestingSchedule.duration) {
-            return vestingSchedule.amountTotal - (vestingSchedule.released);
-        } else {
-            uint256 timeFromStart = currentTime - (vestingSchedule.start);
-            uint secondsPerSlice = vestingSchedule.slicePeriodSeconds;
-            uint256 vestedSlicePeriods = timeFromStart / (secondsPerSlice);
-            uint256 vestedSeconds = vestedSlicePeriods * (secondsPerSlice);
-            // CAUTION
-            // originally, it's "vestedAmount = vestingSchedule.amountTotal * (vestedSeconds / vestingSchedule.duration)".
-            // But it was deformed to avoid a decimal calculation.
-            uint256 vestedAmount = (vestingSchedule.amountTotal * vestedSeconds) / vestingSchedule.duration;
-            vestedAmount = vestedAmount - vestingSchedule.released;
-            return vestedAmount;
-        }
     }
 
     function getTokenObj() internal view returns(IERC20) {
