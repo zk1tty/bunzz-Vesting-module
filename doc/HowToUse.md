@@ -44,4 +44,4 @@ This function has 2 arguments as follows.
   2. Call `computeReleasableAmount(vestingScheduleId)`
 
 - Get the current block time?
-  - getCurrentTime()
+  - Call `getCurrentTime()`
