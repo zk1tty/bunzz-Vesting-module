@@ -62,6 +62,7 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
         vestingSchedulesIds.push(vestingScheduleId);
         uint256 currentVestingCount = holdersVestingCount[_beneficiary];
         holdersVestingCount[_beneficiary] = currentVestingCount + 1;
+        emit VestingScheduleCreated(vestingScheduleId);
     }
 
   
