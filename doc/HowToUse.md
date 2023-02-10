@@ -29,7 +29,7 @@ This function has 2 arguments as follows.
     - vestingScheduleId: the id of the vesting schedule. <- how to get the ID?
     - amount: the amount of funds you want to retrieve.
 
-## How-to
+## How to call contract methods from Bunzz App
 
 - Get the vestingSchedule ID?
   1. Call `getVestingSchedulesCountByBeneficiary(address beneficiary)`. It returns vestingSchedulesCount which represents how many vestingSchedule the given beneficiary has.
@@ -45,3 +45,50 @@ This function has 2 arguments as follows.
 
 - Get the current block time?
   - Call `getCurrentTime()`
+
+
+## How to implement methods in FE/BE
+---sample code----
+
+```
+import { ethers } from "hardhat"
+import { keccak256 } from "@ethersproject/keccak256"
+import { MerkleTree } from "merkletreejs"
+
+const ONE_WEEK = 60 * 60 * 24 * 7
+
+// Same whitelist as previous example
+const whitelist = [
+    ["0x08C8e533722578834BC844413d3B11e834f1e36f", "0x2b221d0aFB3309b7E7A6e61a24eFd4B12Adc1038"],
+    [ethers.utils.parseEther("5000"), ethers.utils.parseEther("9000")],
+    [ONE_WEEK, ONE_WEEK]
+]
+const nodeLeaves = []
+
+// convert amount to wei
+whitelist[1] = whitelist[1].map(amount => ethers.utils.parseEther(val))
+for (let i = 0; i < whitelist[0].length; i++) {
+    nodeLeaves.push(ethers.utils.solidityKeccack256(
+        ["address", "uint256", "uint256"],
+        [whitelist[0][i], whitelist[1][i], whitelist[2][i]]
+    ))
+}
+
+// Generate the merkle tree
+const merkleTree = new MerkleTree(nodeLeaves, keccak256, { sortPairs: true })
+
+/**
+ * proof[0] is the hash proof for alice
+ * proof[1] is the hash proof for bob
+ * If any params are given wrong will throw "MerkleVesting: invalid proof" error
+ */
+const proof = nodeLeaves.map(leaf => merkleTree.getHexProof(leaf))
+
+// @note: You can also delegate to whitelist for other users
+await merkleVestingInstance.whitelist(
+    whitelist[0][0],
+    whitelist[1][0],
+    whitelist[2][0],
+    proof[0]
+)
+```
