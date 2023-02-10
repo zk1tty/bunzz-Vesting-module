@@ -1,17 +1,38 @@
 ## About
-> one line description ← What issue does this module solve?
+> Style: 2-3 lines description  
+> Content: What issue does this module solve?
 
-Module contract adds configurable vesting feature to any ERC20 token.
+Vesting Module attaches vesting schedules to only ERC20 tokens. Vesting schedule controls the timing for stakeholders to acquire the project token.
+
+
+## Tags
+> 5-7 keywords about the contract which will later be used for search.
+> Content: use-case in the biz term, technical traits
+
+- (biz use-cases)
+    - project-token
+    - TGE(token generation event)
+    - token-sale
+    - token-allocation
+
+- (technical traits)
+    - vesting
+    - schedule-manager
+    - ERC20
+    - attach-to-ERC20Token
 
 ## Features
 
-> style: dot bullet, content: Who-How-What
+> Style: dot bullet  
+> Content: Who-How-What
 
 - ContractOwner creates a vesting schedule for a specific Beneficiary’s wallet address.
 - Both ContractOwner and Beneficiary can release the token being vested, and transfer it to Beneficiary wallet.
 - ContractOwner can revoke an existing vesting schedule.
 
-Caution: Contract doesn't support native token such as Ether on Ethereum network.
+> 🚧 **WARNING**  
+> Contract doesn't support native token such as Ether on Ethereum network.
+
 
 ## Use case
 
