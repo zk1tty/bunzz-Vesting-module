@@ -1,10 +1,36 @@
-# WRITE(main)
+> Function should be labelled and able to be sorted with 
+> 1. caller constraints and 
+> 2. the likelihood of usage
+
+> e.g. Caller constraints:
+> - only ContractOwner
+> - specific role  
+
+> e.g. Likelihood of usage:
+> - main business-operation:
+>   - Specification should be described at HowToUse page.
+> - only for emergency case:
+>   - no need to be described at HowToUse page.
+> - ??
+
+# WRITE(main operation)
+
+## Business Operation
+### Business Process Diagrams
+They show the “who,” “what,” “when,” “where” and “how” for these steps, and help to analyze the “why.”
+Example: 
+![example](./image/business-process-diagrams.png)
+
+Sample:
+![vesting-module-bpd](./image/vesting-module-bpd.png)
 
 ## connectToOtherContracts
-~~Connect the underlying pair from dex and the dex router~~
+~~Connect the underlying pair from dex and the dex router.~~  
 Initial setup to connect the module to ERC20 being vested.
 
-- Who can call: ContractOwner
+> Style: Should describe any constrains for caller.
+
+- Caller constraints: only ContractOwner
 
 |Name|Type|Description|Example|Default|
 |--- |---|---|---|---|
@@ -12,9 +38,11 @@ Initial setup to connect the module to ERC20 being vested.
 
 ## createVestingSchedule
 
-- Who can call: ContractOwner
+- Caller: only ContractOwner
 
-Note: How to calculate the block time?
+> 🖋️ **NOTE:**  
+> How to get the current block time?
+
 
 |Name|Type|Unit|Description|Example|Requirement|
 |---|---|---|---|---|---|
@@ -30,7 +58,7 @@ Note: How to calculate the block time?
 
 Owner can only revoke a vesting schedule that have been marked as revocable at the moment of creation.
 
-- Who can call: ContractOwner
+- Caller: only ContractOwner
 
 |Name|Type|Description|Example|Requirement|
 |---|---|---|---|---|
@@ -38,7 +66,9 @@ Owner can only revoke a vesting schedule that have been marked as revocable at t
 
 ## release
 
-- Who can call: ContractOwner, Beneficiary determined in the vestingSchedule
+- Caller: 
+    - ContractOwner
+    - Beneficiary determined in the vestingSchedule
 
 |Name|Type|Description|Example|Default|
 |---|---|---|---|---|

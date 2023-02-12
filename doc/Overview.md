@@ -22,27 +22,43 @@ Vesting Module attaches vesting schedules to only ERC20 tokens. Vesting schedule
     - attach-to-ERC20Token
 
 ## Features
-
-> Style: dot bullet  
+> Style: bullet points  
 > Content: Who-How-What
 
 - ContractOwner creates a vesting schedule for a specific Beneficiary’s wallet address.
 - Both ContractOwner and Beneficiary can release the token being vested, and transfer it to Beneficiary wallet.
 - ContractOwner can revoke an existing vesting schedule.
 
-> 🚧 **WARNING**  
-> Contract doesn't support native token such as Ether on Ethereum network.
+### Warning/Note
+> Style: emoji + bold
+> Contents: Warning and/or Note
+
+🚧 **WARNING:**  
+Module doesn't support native token such as Ether on Ethereum network.
+
+🖊️ **NOTE:**  
+Module doesn't support native token such as Ether on Ethereum network.
 
 
-## Use case
+## Use-case
 
-- As a token-sales manager of your project token:
-    - This module handles token vesting schedule and token releasing for each stake-holder(e.g. investor).
-    - Your project token would be bought by investors over an ico/public sale/seed phase over a period of time that is pre-calculated.
+> Style: bullet points  
+> Content: from persona
+
+- As a sales manager of your project token:
+    1. You create a plan of how to distribute your token regarding to the vesting schedule of this module.
+    2. You call out the investors who want to acquire your project token, and collect their wallet address.
+    3. 
+    4. Module handles token vesting schedule and releasing the accumulated token for each stakeholder(e.g. investor).
+    5. Your project token would be bought by investors over an ico/public sale/seed phase over a period of time.
+
+- 
 
 ## Sample dApp
-- github repo URL
+
+> Paste the link of sample dApp repo.
+- github repo URL(JCorder works on it)
 
 ---
 ## Review report
-- [Norika's report](https://github.com/suricata3838/bunzz-Vesting-module)
+- [Norika's report](https://github.com/suricata3838/bunzz-Vesting-module)s
