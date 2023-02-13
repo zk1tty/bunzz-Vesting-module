@@ -13,16 +13,18 @@
 >   - no need to be described at HowToUse page.
 > - ??
 
-# WRITE(main operation)
-
-## Business Operation
+# WRITE
+## Operation
 ### Business Process Diagrams
-They show the “who,” “what,” “when,” “where” and “how” for these steps, and help to analyze the “why.”
-Example: 
-![example](./image/business-process-diagrams.png)
+> Contents: They show the “who,” calls “what” function, “when,” “where” and “how”.
 
 Sample:
 ![vesting-module-bpd](./image/vesting-module-bpd.png)
+
+## WRITE(business operation)
+
+## transferOwnership
+
 
 ## connectToOtherContracts
 ~~Connect the underlying pair from dex and the dex router.~~  
@@ -75,6 +77,5 @@ Owner can only revoke a vesting schedule that have been marked as revocable at t
 |vestingScheduleId|bytes32|The id of the vesting schedule|0x1|0x0|
 |amount|uint256|Amount of tokens that will be release|100|less than computeReleasableAmount()|
 
-# WRITE(emergency case)
-- transferOwnership
+## WRITE(emergency)
 - renounceOwnership
