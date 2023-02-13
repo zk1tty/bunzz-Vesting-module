@@ -1,8 +1,8 @@
 > Function should be labelled and able to be sorted with 
-> 1. caller constraints and 
-> 2. the likelihood of usage
+> 1. constraints on caller and 
+> 2. likelihood of usage
 
-> e.g. Caller constraints:
+> e.g. Constraints on caller:
 > - only ContractOwner
 > - specific role  
 
@@ -14,12 +14,21 @@
 > - ??
 
 # WRITE
+
+## Contract Status
+### State machine Diagrams
+State machine diagram explains how the internal status of the contract will be changing by "which function" triggered by "which actor".
+
+Sample diagram:
+![vesting-module-smd](./image/vesting-module-smd.png)
+(I will put the diagram later on.)
+
 ## Operation
 ### Business Process Diagrams
-> Contents: They show the “who,” calls “what” function, “when,” “where” and “how”.
+Business process diagram explains "which actor" calls "what function" to operate the whole business processes of this as an main usage.
 
-Sample:
-![vesting-module-bpd](./image/vesting-module-bpd.png)
+Sample diagram:
+![vesting-module-bpd-2](./image/vesting-module-bpd-2.png)
 
 ## WRITE(business operation)
 

@@ -27,6 +27,7 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
 
    /**
     * @dev  
+    * TODO: please add the description of each variables.
     */
     function createVestingSchedule(
         address _beneficiary,
@@ -68,6 +69,7 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
   
    /**
     * @dev 
+    * TODO: please add the description of each variables.
     */
     function revoke(bytes32 vestingScheduleId) external override onlyOwner onlyIfVestingScheduleNotRevoked(vestingScheduleId){
         VestingSchedule storage vestingSchedule = vestingSchedules[vestingScheduleId];
