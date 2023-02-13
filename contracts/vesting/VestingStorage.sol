@@ -2,7 +2,13 @@ pragma solidity ^0.8.0;
 
 contract VestingStorage {
 
-    // Review
+    /**
+     * @dev
+     * TODO: should add the descriptin of "when" and "for which purpose" the event will be emitted.
+     * TODO: mention the use-case as follows.
+     * e.g. vestingSchedulesId is the identifier of vestingSchedule.
+     * beneficiary/owner needs to know the vestingSchedulesId to release the amount accumulated for the beneficiary.
+     */
     event VestingScheduleCreated(bytes32 vestingSchedulesId);
     
     struct VestingSchedule{
