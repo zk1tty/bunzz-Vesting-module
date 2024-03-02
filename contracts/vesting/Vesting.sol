@@ -20,7 +20,7 @@ contract Vesting is Ownable, ReentrancyGuard, VestingStorage, IVesting{
    /**
     * TODO[Review]:why argumnet type is list, while only the 1st element is taken?
     */
-    function connectToOtherContracts(address[] calldata contracts) external onlyOwner{
+    function connectToOtherContracts(address[] calldata contracts) external {
         require(contracts[0] != address(0),"Vesting: Token address is zeroAddress");
         _token = contracts[0];
     }
